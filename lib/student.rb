@@ -61,7 +61,13 @@ attr_reader :id
   end
 
   def self.find_by_name(name)
+    sql = <<-SQL 
+      SELECT * FROM students 
+      WHERE name = ?
+    SQL
 
+    results = DB[:conn].execute(sql, name)[0]
+    Student.new(results[0], results[1], results[2])
   end
 
 
