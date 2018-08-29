@@ -18,7 +18,7 @@ attr_reader :id
         name TEXT,
         grade TEXT
       )
-      SQL
+    SQL
 
       DB[:conn].execute(sql)
   end
@@ -26,10 +26,18 @@ attr_reader :id
   def self.drop_table
     sql = <<-SQL
       DROP TABLE students
-      SQL
+    SQL
 
     DB[:conn].execute(sql)
   end
+
+  def update 
+    sql = <<-SQL 
+      UPDATE students SET name = ?, grade = ?, WHERE id = ?
+    SQL
+
+      
+  end 
 
   def save
     if self.id
@@ -38,10 +46,12 @@ attr_reader :id
       sql = <<-SQL
         INSERT INTO students (name, grade)
         VALUES (?, ?)
-        SQL
+      SQL
 
       DB[:conn].execute(sql, self.name, self.grade)
       @id = DB[:conn].execute("SELECT last_insert_rowid() FROM students")[0][0]
   end
+
+  
 
 end
